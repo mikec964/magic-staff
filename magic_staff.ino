@@ -32,7 +32,7 @@ const bool COMMON_ANODE = true; // true (anode) = tie to 3.3V, false (cathode) =
 bool firstPass = true;
 AsyncDelay delay_2s;
 int state = 1;
-int maxState = 3;
+int maxState = 17;
 bool stateChanged = true;
 
 
@@ -43,16 +43,13 @@ void setup() {
 
   Serial.begin(9600);
   delay(1000);
-  Serial.println("Starting program.");
+//  Serial.println("Starting program.");
   delay_2s.start(2000, AsyncDelay::MILLIS);
-}
 
-
-void loop() {
-  unsigned long currentMillis = millis();
   byte rgb[3] = {0, 0, 0};
   double hsl[3] = {0.0, 0.0, 0.0};
 
+  firstPass = false;
   if (firstPass == true) {
     // First run tests
     firstPass = false;
@@ -62,36 +59,57 @@ void loop() {
     ledMath.hslToRgb(hsl_red[0], hsl_red[1], hsl_red[2], rgb);
     PrintRgb(rgb);
 
-    Serial.print("hsl_blue = ");
-    PrintHsl(hsl_blue);
-    ledMath.hslToRgb(hsl_blue[0], hsl_blue[1], hsl_blue[2], rgb);
-    PrintRgb(rgb);
-
     Serial.print("hsl_green = ");
     PrintHsl(hsl_green);
     ledMath.hslToRgb(hsl_green[0], hsl_green[1], hsl_green[2], rgb);
     PrintRgb(rgb);
 
+    Serial.print("hsl_blue = ");
+    PrintHsl(hsl_blue);
+    ledMath.hslToRgb(hsl_blue[0], hsl_blue[1], hsl_blue[2], rgb);
+    PrintRgb(rgb);
+
     Serial.println("--");
   }
 
-  if (stateChanged == true) {
-    stateChanged = false;
-    if (state == 1) {
-      Serial.print("do it 1: ");
-      SetRgbLed(rgb_red);
-    } else if (state == 2) {
-      Serial.print("do it 2: ");
-      SetRgbLed(rgb_green);
-    } else if (state == 3) {
-      Serial.print("do it 3: ");
-      SetRgbLed(rgb_blue);
-    }
-  }
+}
+
+
+void loop() {
+  unsigned long currentMillis = millis();
+
+//  if (stateChanged == true) {
+//    stateChanged = false;
+//    if (state == 1) {
+//      Serial.print("do it 1: ");
+//    } else if (state == 2) {
+//      Serial.print("do it 2: ");
+//    } else if (state == 3) {
+//      Serial.print("do it 3: ");
+//    }
+//  }
+
+  if (state == 1) { SetRgbLed(rgb_yellowgreen); }
+  if (state == 2) { SetRgbLed(rgb_turquoise); }
+  if (state == 3) { SetRgbLed(rgb_teal); }
+  if (state == 4) { SetRgbLed(rgb_springgreen); }
+  if (state == 5) { SetRgbLed(rgb_seagreen); }
+  if (state == 6) { SetRgbLed(rgb_palegreen); }
+  if (state == 7) { SetRgbLed(rgb_olivedrab); }
+  if (state == 8) { SetRgbLed(rgb_olive); }
+  if (state == 9) { SetRgbLed(rgb_limegreen); }
+  if (state == 10) { SetRgbLed(rgb_lime); }
+  if (state == 11) { SetRgbLed(rgb_lightgreen); }
+  if (state == 12) { SetRgbLed(rgb_lawngreen); }
+  if (state == 13) { SetRgbLed(rgb_greenyellow); }
+  if (state == 14) { SetRgbLed(rgb_forestgreen); }
+  if (state == 15) { SetRgbLed(rgb_darkgreen); }
+  if (state == 16) { SetRgbLed(rgb_chartreuse); }
+  if (state == 17) { SetRgbLed(rgb_aquamarine); }
 
   if (delay_2s.isExpired()) {
-    Serial.print("Delay millis=");
-    Serial.println(millis());
+//    Serial.print("Delay millis=");
+//    Serial.println(millis());
     stateChanged = true;
     state = state + 1;
     if (state > maxState) {
@@ -102,6 +120,14 @@ void loop() {
 
 }
 
+//void BlendRgb(byte rgb[], byte targetRbg[], unsigned long endTime) {
+//  rGap = targetRgb[0] - rgb[0];
+//  gGap = targetRgb[1] - rgb[1];
+//  bGap = targetRgb[2] - rgb[2];
+//  
+//  long duration = endTime - millis();
+//  
+//}
 void PrintHsl(double hsl[]) {
   Serial.print("hsl is ");
   Serial.print("hue=");
@@ -124,7 +150,7 @@ void PrintRgb(byte rgb[]) {
 
 void SetRgbLed(byte rgb[]) {
   byte r, g, b;
-  PrintRgb(rgb);
+//  PrintRgb(rgb);
   if (COMMON_ANODE == false) {
     r = rgb[0];
     g = rgb[1];
